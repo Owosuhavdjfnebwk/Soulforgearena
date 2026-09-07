@@ -1,0 +1,23 @@
+{
+  "name": "Arena Game",
+  "short_name": "Arena",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "description": "Juego HTML con soporte PWA y recepción de mods compartidos.",
+  "icons": [
+    {"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ],
+  "share_target": {
+    "action": "./index.html?shared=1",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "files": [
+        {"name":"file","accept":[".txt",".js","text/plain","application/javascript"]}
+      ]
+    }
+  }
+}
