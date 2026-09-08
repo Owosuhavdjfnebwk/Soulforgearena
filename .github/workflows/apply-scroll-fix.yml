@@ -1,0 +1,37 @@
+name: Apply profiles scroll fix
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event.head_commit.message != 'Fix profiles and characters list scrolling'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch scroll containers
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          marker = '/* FIX: perfiles y personajes deben desplazar internamente */'
+          if marker not in s:
+              css = '''\n        /* FIX: perfiles y personajes deben desplazar internamente */\n        .profiles-panel {\n            min-height: 0;\n            overflow: hidden;\n        }\n\n        .profiles-panel > .panel-tab-content {\n            min-height: 0;\n            overflow: hidden;\n            flex: 1 1 0;\n        }\n\n        #profiles-list,\n        #characters-list {\n            flex: 1 1 0;\n            min-height: 0;\n            height: 0;\n            overflow-y: auto;\n            overflow-x: hidden;\n            overscroll-behavior: contain;\n            -webkit-overflow-scrolling: touch;\n        }\n\n        #profiles-list {\n            padding-bottom: 80px;\n        }\n\n        #characters-list {\n            padding-bottom: 84px;\n        }\n'''
+              s = s.replace('</style>', css + '\n    </style>', 1)
+              p.write_text(s, encoding='utf-8')
+
+      - name: Commit fix
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Fix profiles and characters list scrolling"
+          git push
