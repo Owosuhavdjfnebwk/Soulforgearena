@@ -2107,6 +2107,38 @@
         }
 
         /* Ajuste extra música landscape bajo (Android) ya cubierto arriba */
+    
+        /* FIX: perfiles y personajes deben desplazar internamente */
+        .profiles-panel {
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .profiles-panel > .panel-tab-content {
+            min-height: 0;
+            overflow: hidden;
+            flex: 1 1 0;
+        }
+
+        #profiles-list,
+        #characters-list {
+            flex: 1 1 0;
+            min-height: 0;
+            height: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #profiles-list {
+            padding-bottom: 80px;
+        }
+
+        #characters-list {
+            padding-bottom: 84px;
+        }
+
     </style>
 </head>
 <body>
