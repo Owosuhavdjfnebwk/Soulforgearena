@@ -1,0 +1,13 @@
+# Local/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Temporary/generated local artifacts
+*.tmp
+*.bak
+*.log
+
+# Local test exports
+sandbox/
