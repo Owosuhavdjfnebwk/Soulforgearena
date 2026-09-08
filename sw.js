@@ -1,4 +1,4 @@
-const CACHE = 'arena-pwa-v1';
+const CACHE = 'arena-pwa-v2';
 const APP_SHELL = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', event => {
@@ -6,7 +6,11 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
-  event.waitUntil(self.clients.claim());
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key)));
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener('fetch', event => {
@@ -40,7 +44,7 @@ self.addEventListener('fetch', event => {
       } catch (err) {
         console.error('[PWA Share Target] Error:', err);
       }
-      return Response.redirect(new URL('./index.html?shared=1', self.location.origin), 303);
+      return Response.redirect(new URL('/Soulforgearena/index.html?shared=1', self.location.origin), 303);
     })());
     return;
   }
